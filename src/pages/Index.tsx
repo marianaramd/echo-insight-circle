@@ -1,11 +1,11 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AnimatedCircle from "@/components/AnimatedCircle";
 import ConversationList from "@/components/ConversationList";
 import MessageInput from "@/components/MessageInput";
 import InsightPanel from "@/components/InsightPanel";
+import VoiceControls from "@/components/VoiceControls";
 import { MessageProps } from "@/components/Message";
-import { Separator } from "@/components/ui/separator";
 
 const sampleMessages: MessageProps[] = [
   {
@@ -54,6 +54,68 @@ const Index = () => {
   const [summary, setSummary] = useState("The conversation revolves around clarifying upload functionality within the platform. The user appears to be new and is seeking guidance on basic features.");
   const [insights, setInsights] = useState<string[]>(sampleInsights);
   const [topics, setTopics] = useState<string[]>(sampleTopics);
+  
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  
+  // Initialize and set up speech recognition
+  useEffect(() => {
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      
+      if (recognitionRef.current) {
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+        
+        recognitionRef.current.onresult = (event) => {
+          const transcript = Array.from(event.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('');
+            
+          console.log("Recognized speech:", transcript);
+          
+          // Process final results only
+          if (event.results[event.results.length - 1].isFinal) {
+            processVoiceInput(transcript);
+          }
+        };
+        
+        recognitionRef.current.onerror = (event) => {
+          console.error("Speech recognition error", event.error);
+          setIsListening(false);
+        };
+      }
+    } else {
+      console.warn("Speech recognition not supported in this browser");
+    }
+    
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
+
+  const startListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+  
+  const processVoiceInput = (transcript: string) => {
+    if (transcript.trim()) {
+      handleSendMessage(transcript);
+    }
+  };
 
   const handleSendMessage = (content: string) => {
     // Add user message
@@ -65,12 +127,9 @@ const Index = () => {
     
     setMessages([...messages, newUserMessage]);
     
-    // Start AI response simulation
-    setIsListening(true);
-    
-    // Simulate AI thinking process
-    setTimeout(() => {
-      setIsListening(false);
+    // If we're not already processing an AI response
+    if (!isProcessing) {
+      // Start AI response simulation
       setIsProcessing(true);
       
       // Simulate AI response
@@ -113,7 +172,7 @@ const Index = () => {
           }
         }
       }, 1500);
-    }, 1000);
+    }
   };
 
   return (
@@ -126,7 +185,7 @@ const Index = () => {
         </div>
 
         {/* Status Text */}
-        <div className="mb-8 text-center">
+        <div className="mb-4 text-center">
           <h2 className="text-xl font-medium">
             {isListening 
               ? "Listening..." 
@@ -135,6 +194,13 @@ const Index = () => {
                 : "Hello, I'm Maggie"}
           </h2>
         </div>
+        
+        {/* Voice Controls */}
+        <VoiceControls 
+          isListening={isListening}
+          onStartListening={startListening}
+          onStopListening={stopListening}
+        />
         
         {/* Conversation Container */}
         <div className="w-full max-w-3xl h-96 border border-border rounded-lg flex flex-col bg-white/80 shadow-lg backdrop-blur-sm overflow-hidden">

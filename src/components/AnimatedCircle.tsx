@@ -13,6 +13,7 @@ const AnimatedCircle: React.FC<AnimatedCircleProps> = ({
   size = "lg",
 }) => {
   const [rotation, setRotation] = useState(0);
+  const [pulseSize, setPulseSize] = useState(0);
 
   // Sizes for different circle variants
   const sizeClasses = {
@@ -48,6 +49,24 @@ const AnimatedCircle: React.FC<AnimatedCircleProps> = ({
       }
     };
   }, [isListening, isProcessing]);
+  
+  // Pulsating effect when listening
+  useEffect(() => {
+    let pulsateInterval: number;
+    
+    if (isListening) {
+      pulsateInterval = window.setInterval(() => {
+        setPulseSize((prev) => (prev + 1) % 20); // Oscillate between 0 and 19
+      }, 100);
+    }
+    
+    return () => {
+      if (pulsateInterval) {
+        clearInterval(pulsateInterval);
+      }
+      setPulseSize(0);
+    };
+  }, [isListening]);
 
   return (
     <div className="relative flex items-center justify-center">
@@ -64,17 +83,26 @@ const AnimatedCircle: React.FC<AnimatedCircleProps> = ({
         >
           {/* Pulsating effect when listening */}
           {isListening && (
-            <div className="absolute inset-0 rounded-full bg-echo-purple/10 animate-pulse-slow"></div>
+            <>
+              <div className="absolute inset-0 rounded-full bg-purple-500/10 animate-pulse-slow"></div>
+              <div 
+                className={`w-1/2 h-1/2 rounded-full bg-purple-500/20`}
+                style={{
+                  transform: `scale(${0.8 + pulseSize * 0.01})`,
+                  transition: 'transform 0.1s ease-in-out'
+                }}
+              ></div>
+            </>
           )}
           
           {/* Processing indicator */}
           {isProcessing && (
-            <div className="w-1/2 h-1/2 border-4 border-t-transparent rounded-full border-echo-teal animate-spin"></div>
+            <div className="w-1/2 h-1/2 border-4 border-t-transparent rounded-full border-teal-500 animate-spin"></div>
           )}
           
           {/* Default state - show nothing */}
           {!isListening && !isProcessing && (
-            <div className="w-1/2 h-1/2 rounded-full bg-echo-purple/10 opacity-50"></div>
+            <div className="w-1/2 h-1/2 rounded-full bg-purple-500/10 opacity-50"></div>
           )}
         </div>
       </div>

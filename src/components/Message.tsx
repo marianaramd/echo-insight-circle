@@ -14,7 +14,7 @@ const Message: React.FC<MessageProps> = ({ content, sender, timestamp }) => {
   return (
     <div className={`flex items-start gap-3 mb-6 animate-fade-in`}>
       {/* Avatar or Icon */}
-      <div className={`mt-1 flex-shrink-0 ${isAi ? "bg-echo-purple" : "bg-secondary"} rounded-full p-2 shadow-sm`}>
+      <div className={`mt-1 flex-shrink-0 ${isAi ? "bg-purple-500" : "bg-secondary"} rounded-full p-2 shadow-sm`}>
         {isAi ? (
           <CircleDot className="w-5 h-5 text-white" />
         ) : (
