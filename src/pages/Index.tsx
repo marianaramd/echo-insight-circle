@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 
 const sampleMessages: MessageProps[] = [
   {
-    content: "Hello! I'm Echo Insight. How can I help you today?",
+    content: "Hello! I'm Maggie. How can I help you today?",
     sender: "ai",
     timestamp: "Today, 10:05 AM",
   },
@@ -29,7 +29,7 @@ const sampleMessages: MessageProps[] = [
     timestamp: "Today, 10:07 AM",
   },
   {
-    content: "You can upload text documents, notes, or any relevant files that you want to work on within the Echo Insight app. You can chat with our support team using the chat bubble in Settings for additional help.",
+    content: "You can upload text documents, notes, or any relevant files that you want to work on within the Maggie app. You can chat with our support team using the chat bubble in Settings for additional help.",
     sender: "ai",
     timestamp: "Today, 10:07 AM",
   },
@@ -85,7 +85,7 @@ const Index = () => {
         } else if (content.toLowerCase().includes("help")) {
           aiResponse = "I'm here to help! What would you like to know about our platform?";
         } else if (content.toLowerCase().includes("feature") || content.toLowerCase().includes("do")) {
-          aiResponse = "Echo Insight can analyze conversations, provide summaries, extract key insights, and help you make better decisions based on your discussions.";
+          aiResponse = "Maggie can analyze conversations, provide summaries, extract key insights, and help you make better decisions based on your discussions.";
         } else {
           aiResponse = "Thank you for your message. I'm analyzing your input to provide the best possible assistance.";
         }
@@ -132,12 +132,12 @@ const Index = () => {
               ? "Listening..." 
               : isProcessing 
                 ? "Processing..." 
-                : "Poised"}
+                : "Hello, I'm Maggie"}
           </h2>
         </div>
         
         {/* Conversation Container */}
-        <div className="w-full max-w-3xl h-96 border border-border rounded-lg flex flex-col bg-secondary/10 backdrop-blur-sm overflow-hidden">
+        <div className="w-full max-w-3xl h-96 border border-border rounded-lg flex flex-col bg-white/80 shadow-lg backdrop-blur-sm overflow-hidden">
           <ConversationList messages={messages} />
           <MessageInput 
             onSendMessage={handleSendMessage} 
@@ -147,7 +147,7 @@ const Index = () => {
       </div>
 
       {/* Right Sidebar - Insights and Summary */}
-      <div className="w-full md:w-[350px] border-t md:border-t-0 md:border-l border-border p-4 overflow-y-auto bg-secondary/5">
+      <div className="w-full md:w-[350px] border-t md:border-t-0 md:border-l border-border p-4 overflow-y-auto bg-secondary/40">
         <h2 className="text-xl font-medium mb-4">Analysis</h2>
         <InsightPanel 
           summary={summary}

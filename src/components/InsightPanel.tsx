@@ -17,7 +17,7 @@ const InsightPanel: React.FC<InsightPanelProps> = ({
   return (
     <div className="w-full space-y-4 py-4">
       {/* Summary Card */}
-      <Card className="bg-secondary/30">
+      <Card className="bg-white/80 shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium">Conversation Summary</CardTitle>
         </CardHeader>
@@ -29,7 +29,7 @@ const InsightPanel: React.FC<InsightPanelProps> = ({
       </Card>
 
       {/* Insights Card */}
-      <Card className="bg-secondary/30">
+      <Card className="bg-white/80 shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium">Key Insights</CardTitle>
         </CardHeader>
@@ -38,7 +38,7 @@ const InsightPanel: React.FC<InsightPanelProps> = ({
             <ul className="space-y-2">
               {insights.map((insight, index) => (
                 <li key={index} className="flex items-start gap-2">
-                  <span className="w-5 h-5 rounded-full bg-echo-purple flex items-center justify-center flex-shrink-0 text-xs">
+                  <span className="w-5 h-5 rounded-full bg-echo-purple flex items-center justify-center flex-shrink-0 text-xs text-white">
                     {index + 1}
                   </span>
                   <span className="text-sm">{insight}</span>
@@ -55,7 +55,7 @@ const InsightPanel: React.FC<InsightPanelProps> = ({
 
       {/* Topics Card */}
       {topics.length > 0 && (
-        <Card className="bg-secondary/30">
+        <Card className="bg-white/80 shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-medium">Topics Discussed</CardTitle>
           </CardHeader>
@@ -64,7 +64,7 @@ const InsightPanel: React.FC<InsightPanelProps> = ({
               {topics.map((topic, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-secondary rounded-full text-xs"
+                  className="px-3 py-1 bg-secondary rounded-full text-xs shadow-sm"
                 >
                   {topic}
                 </span>

@@ -60,7 +60,7 @@ const AnimatedCircle: React.FC<AnimatedCircleProps> = ({
       >
         {/* Inner circle */}
         <div
-          className={`${sizeClasses[size]} rounded-full bg-background flex items-center justify-center relative z-10`}
+          className={`${sizeClasses[size]} rounded-full bg-white shadow-md flex items-center justify-center relative z-10`}
         >
           {/* Pulsating effect when listening */}
           {isListening && (
